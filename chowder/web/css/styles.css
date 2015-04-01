@@ -1,0 +1,57 @@
+body {
+    background: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size:cover;
+    background-size: cover;
+    color: #ffffff;
+}
+
+#modal, .post {
+    color: #333333;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.page-header {
+    margin-top: 0;
+}
+
+.featureImg {
+    margin-bottom: 20px;
+}
+
+#frontAndCenter {
+}
+@media (min-height: 360px) {
+  #frontAndCenter {
+    margin-top: 5%;
+  }
+}
+@media (min-height: 480px) {
+  #frontAndCenter {
+    margin-top: 10%;
+  }
+}
+@media (min-height: 576px) {
+  #frontAndCenter {
+    margin-top: 15%;
+  }
+}
+@media (min-height: 720px) {
+  #frontAndCenter {
+    margin-top: 20%;
+  }
+}
+@media (min-height: 900px) {
+  #frontAndCenter {
+    margin-top: 25%;
+  }
+}
+@media (min-height: 1200px) {
+  #frontAndCenter {
+    margin-top: 33.3%;
+  }
+}
