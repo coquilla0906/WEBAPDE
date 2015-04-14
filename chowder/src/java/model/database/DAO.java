@@ -42,7 +42,7 @@ public class DAO {
 			return data.get(1).get();
 		else if (table.equalsIgnoreCase("rating"))
 			return data.get(2).get();
-        else if (table.equalsIgnoreCase("suggestions"))
+                else if (table.equalsIgnoreCase("suggestions"))
 			return data.get(3).get();
 		
 		return null;
@@ -56,7 +56,7 @@ public class DAO {
 			return data.get(1).get(key);
 		else if (table.equalsIgnoreCase("rating"))
 			return data.get(2).get(key);
-        else if (table.equalsIgnoreCase("suggestions"))
+                else if (table.equalsIgnoreCase("suggestions"))
 			return data.get(3).get(key);
 
 		return null;
@@ -78,7 +78,7 @@ public class DAO {
 			return data.get(1).search(searchStr);
 		else if (table.equalsIgnoreCase("rating"))
 			return data.get(2).search(searchStr);
-        else if (table.equalsIgnoreCase("suggestions"))
+                else if (table.equalsIgnoreCase("suggestions"))
 			return data.get(3).search(searchStr);
 
 		return null;
@@ -95,18 +95,13 @@ public class DAO {
 	 *            object to add
 	 */
 	public void add(String table, Object obj) {
-            System.out.println("1");
-		if (table.equalsIgnoreCase("user"))
-                {
-                    System.out.println("2");
+                if (table.equalsIgnoreCase("user"))
 			((IDBCUD) data.get(0)).add(obj);
-                        System.out.println("3");
-                }
 		else if (table.equalsIgnoreCase("preferences"))
 			((IDBCUD) data.get(1)).add(obj);
 		else if (table.equalsIgnoreCase("rating"))
 			((IDBCUD) data.get(2)).add(obj);
-        else if (table.equalsIgnoreCase("suggestions"))
+                else if (table.equalsIgnoreCase("suggestions"))
 			((IDBCUD) data.get(3)).add(obj);
 	
 	}
@@ -128,7 +123,7 @@ public class DAO {
 			((IDBCUD) data.get(1)).update(obj, origKey);
 		else if (table.equalsIgnoreCase("rating"))
 			((IDBCUD) data.get(2)).update(obj, origKey);
-        else if (table.equalsIgnoreCase("suggestions"))
+                else if (table.equalsIgnoreCase("suggestions"))
 			((IDBCUD) data.get(3)).update(obj, origKey);
 
 
@@ -149,7 +144,7 @@ public class DAO {
 			((IDBCUD) data.get(1)).delete(obj);
 		else if (table.equalsIgnoreCase("rating"))
 			((IDBCUD) data.get(2)).delete(obj);
-        else if (table.equalsIgnoreCase("suggestions"))
+                else if (table.equalsIgnoreCase("suggestions"))
 			((IDBCUD) data.get(3)).delete(obj);
 
 	}

@@ -77,14 +77,18 @@ public class loginServlet extends HttpServlet {
             throws ServletException, IOException {
         String user = request.getParameter("username"),
             pwd = request.getParameter("password"),
-            email = "";
+            email = "", memberSince = "";
+        int isAdmin = 0;
         boolean checkUser = false;
         checkUser = userController.checkUser(user, pwd);
         if (checkUser){
             user = userController.getUser().getUsername();
             email = userController.getUser().getEmail();
+            isAdmin = userController.getUser().getIsAdmin();
+            memberSince = userController.getUser().getMemberSince().toString();
             Cookie loginCookie = 
-                new Cookie("loginCookie", user + "~" + email);
+                new Cookie("loginCookie", user + "~" + email + "~" + 
+                        isAdmin + "~" + memberSince);
             loginCookie.setMaxAge(3600*24);
             response.addCookie(loginCookie);
             response.sendRedirect("maps.jsp");

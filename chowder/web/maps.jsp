@@ -2,24 +2,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>CHOWTIME! Maps</title>
         
-        <!-- This meta tag will ensure proper zooming and mobile support -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-
-        <!-- Import Bootstrap CSS and a user-defined CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/styles.css" rel="stylesheet">
-        
-        <!-- Import JQuery and Bootstrap JS files -->
-        <script src = "js/jquery-1.11.2.min.js"></script>
-        <script src = "js/bootstrap.js"></script>
-        <script src = "js/javascript.js"></script>
+        <!-- Title + imports -->
+        <jsp:include page="common/head.jsp">
+            <jsp:param name="title" value="CHOWTIME! Maps"/>
+        </jsp:include>
         
         <!-- Cookies -->
         <%
-            String username = "", email = "";
+            String username = "", email = "", memberSince = "";
             Cookie[] monster = request.getCookies();
             if (monster != null)
                 for (Cookie clicker: monster)
@@ -28,6 +19,7 @@
                         for (int i=0; i<shit.length; i++){
                             if (i==0) username = shit[i];
                             else if (i==1) email = shit[i];
+                            else if (i==3) memberSince = shit[i];
                         }
                     }
         %>
@@ -40,10 +32,51 @@
             <jsp:param name="master" value="maps.jsp"/>
         </jsp:include>
         
-        <!-- If a user is signed in -->
-        <% if (!username.isEmpty()){ %>
+        <!-- If no user is signed in -->
+        <% if (username.isEmpty()){ %>
         
-        <!-- Body -->
+        <div class="container">
+            <div class="row">
+            
+                <!-- Content -->
+                <div class="container">
+                    <div class="panel panel-default post">
+                        <div class="panel-body">
+                            
+                            <!-- Content header: Name of place and address -->
+                            <div class="page-header">
+                                <h2>
+                                    De La Salle University-Manila
+                                    <small>
+                                        2401 Taft Avenue, Malate, Manila
+                                    </small>
+                                </h2>
+                            </div>
+                            
+                            <!-- The map -->
+                            <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script><div style="overflow:hidden;height:480px;width:100%;"><div id="gmap_canvas" style="height:480px;width:100%;"></div><style>#gmap_canvas img{max-width:none!important;background:none!important}</style><a class="google-map-code" href="http://premium-wordpress-themes.org" id="get-map-data">wordpress with woocommerce</a></div><script type="text/javascript"> function init_map(){var myOptions = {zoom:17,center:new google.maps.LatLng(14.5661786,120.99339080000004),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById("gmap_canvas"), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(14.5661786, 120.99339080000004)});infowindow = new google.maps.InfoWindow({content:"<b>De La Salle University-Manila</b><br/>2401 Taft Avenue, Malate<br/> Manila" });google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});}google.maps.event.addDomListener(window, 'load', init_map);</script>
+                            
+                            <!-- Footer: buttons for interaction -->
+                            <div class="page-footer" align="right">
+                                <br/>
+                                <a class="navbar-button btn-warning btn"
+                                   href="index.html">
+                                    WRONG LOCATION
+                                </a>&nbsp;
+                                <button class="navbar-button btn-danger btn">
+                                    FIND ANOTHER
+                                </button>&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+ 
+        <!-- else, if a user is logged in... -->
+        <% } else { %>
+        
         <div class="container">
             <div class="row">
             
@@ -59,7 +92,7 @@
                             <p class="list-group-item-info">
                                 <span class="glyphicon glyphicon-home">
                                 </span>
-                                Member since <%=java.util.Calendar.getInstance().getTime().toString()%>
+                                Member since <%=memberSince%>
                             </p>
                         </a>
                         <a href="#" class="list-group-item">
@@ -126,49 +159,6 @@
                                 <button class="navbar-button btn-success btn">
                                     ADD TO FAVORITES
                                 </button>
-                                <a class="navbar-button btn-warning btn"
-                                   href="index.html">
-                                    WRONG LOCATION
-                                </a>&nbsp;
-                                <button class="navbar-button btn-danger btn">
-                                    FIND ANOTHER
-                                </button>&nbsp;
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        <!-- else, if the user isn't logged in... -->
-        <% } else { %>
-        
-        <!-- Body -->
-        <div class="container">
-            <div class="row">
-            
-                <!-- Content -->
-                <div class="container">
-                    <div class="panel panel-default post">
-                        <div class="panel-body">
-                            
-                            <!-- Content header: Name of place and address -->
-                            <div class="page-header">
-                                <h2>
-                                    De La Salle University-Manila
-                                    <small>
-                                        2401 Taft Avenue, Malate, Manila
-                                    </small>
-                                </h2>
-                            </div>
-                            
-                            <!-- The map -->
-                            <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script><div style="overflow:hidden;height:480px;width:100%;"><div id="gmap_canvas" style="height:480px;width:100%;"></div><style>#gmap_canvas img{max-width:none!important;background:none!important}</style><a class="google-map-code" href="http://premium-wordpress-themes.org" id="get-map-data">wordpress with woocommerce</a></div><script type="text/javascript"> function init_map(){var myOptions = {zoom:17,center:new google.maps.LatLng(14.5661786,120.99339080000004),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById("gmap_canvas"), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(14.5661786, 120.99339080000004)});infowindow = new google.maps.InfoWindow({content:"<b>De La Salle University-Manila</b><br/>2401 Taft Avenue, Malate<br/> Manila" });google.maps.event.addListener(marker, "click", function(){infowindow.open(map,marker);});}google.maps.event.addDomListener(window, 'load', init_map);</script>
-                            
-                            <!-- Footer: buttons for interaction -->
-                            <div class="page-footer" align="right">
-                                <br/>
                                 <a class="navbar-button btn-warning btn"
                                    href="index.html">
                                     WRONG LOCATION

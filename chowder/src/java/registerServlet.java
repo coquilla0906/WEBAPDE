@@ -7,6 +7,8 @@
 import controller.UserController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -75,11 +77,12 @@ public class registerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = controller.getMaxUserID() + 1;
+        int id = controller.getMaxUserID() + 1, isAdmin = 0;
         String username = request.getParameter("username"),
                 email = request.getParameter("email"),
                 password = request.getParameter("password");
-        User u = new User(id, username, email, password);
+        Timestamp memberSince = new Timestamp(new Date().getTime());
+        User u = new User(id, username, email, password, isAdmin, memberSince);
         controller.addUser(u);
         response.sendRedirect("signIn.jsp");
     }

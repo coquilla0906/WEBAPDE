@@ -7,6 +7,10 @@
 import controller.SuggestionController;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -61,7 +65,12 @@ public class suggestionsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        ArrayList<Suggestion> suggestions = new ArrayList<Suggestion>();
+        for (Iterator i = controller.getAll(); i.hasNext();){
+            Suggestion s = (Suggestion)i.next();
+            suggestions.add(s);
+            System.out.println(s.getSuggestion());
+        }
     }
 
     /**
@@ -79,7 +88,8 @@ public class suggestionsServlet extends HttpServlet {
         String username = request.getParameter("username"),
                 email = request.getParameter("email"),
                 suggestion = request.getParameter("suggestion");
-        Suggestion s = new Suggestion(id, username, email, suggestion);
+        Timestamp datetime = new Timestamp(new Date().getTime());
+        Suggestion s = new Suggestion(id, username, email, suggestion, datetime);
         controller.addSuggestion(s);
         response.sendRedirect(request.getParameter("master"));
     }

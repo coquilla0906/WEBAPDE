@@ -5,7 +5,9 @@
  */
 package model;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -18,6 +20,8 @@ public class User {
     private String password;
     private String email;
     private int userID;
+    private int isAdmin;
+    private Timestamp memberSince;
     private ArrayList<Preferences> preferences;
     
     public User(){
@@ -25,14 +29,18 @@ public class User {
         setUsername("");
         setEmail("");
         setPassword("");
+        setIsAdmin(0);
+        setMemberSince(new Timestamp(new Date().getTime()));
         preferences = new ArrayList<Preferences>();
     }
     
-    public User(int userID, String username, String email, String password){
+    public User(int userID, String username, String email, String password, int isAdmin, Timestamp memberSince){
         setUserID(userID);
         setUsername(username);
         setEmail(email);
         setPassword(password);
+        setIsAdmin(isAdmin);
+        setMemberSince(memberSince);
         preferences = new ArrayList<Preferences>();
     }
 
@@ -68,6 +76,22 @@ public class User {
         return email;
     }
     
+    public int getIsAdmin(){
+        return isAdmin;
+    }
+    
+    public void setIsAdmin(int isAdmin){
+        this.isAdmin = isAdmin;
+    }
+    
+    public Timestamp getMemberSince(){
+        return memberSince;
+    }
+    
+    public void setMemberSince(Timestamp memberSince) {
+        this.memberSince = memberSince;
+    }
+    
     public Iterator getPreferences() {
         return preferences.iterator();
     }
@@ -82,5 +106,6 @@ public class User {
             this.preferences.add(((Preferences)prefList.next()));
         }
     }
+
     
 }

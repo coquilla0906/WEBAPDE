@@ -30,8 +30,6 @@ public class PreferencesDAO implements IDBCUD{
             preparedStatement.setInt(1, preference.getLocationID());
             preparedStatement.setString(2, preference.getName());
             preparedStatement.setString(3, preference.getAddress());
-            
-
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();

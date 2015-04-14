@@ -9,15 +9,18 @@
     <!-- Cookies -->
     <%
         String master = request.getParameter("master"), 
-                username = "", email = "";
+                username = "", email = "", isAdmin = "";
         Cookie[] monster = request.getCookies();
         if (monster != null)
             for (Cookie clicker: monster)
                 if (clicker.getName().equals("loginCookie")){
                     String shit[] = clicker.getValue().split("~");
                     for (int i=0; i<shit.length; i++){
-                        if (i==0) username = shit[i];
-                        else if (i==1) email = shit[i];
+                        switch(i){
+                            case 0: username = shit[i]; break;
+                            case 1: email = shit[i]; break;
+                            case 2: isAdmin = shit[i]; break;
+                        }
                     }
                 }
     %>
@@ -30,11 +33,8 @@
     <div class="navbar navbar-inverse navbar-static-top">
         <div class="container">
 
-            <!-- Wrap the logo and sub btn in div called navbar-header -->
             <div class="navbar-header">		
-                <!-- Logo -->
                 <a href="index.jsp" class="navbar-brand">CHOWTIME!</a>		
-                <!-- Substitute button for when collapse happens -->
                 <button class="navbar-toggle" data-toggle="collapse" 
                         data-target=".navHeaderCollapse">
                     <span class="icon-bar"></span>
@@ -42,19 +42,10 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-
-            <!-- What is going to be collapsed in resizing? --> 
+            
             <div class="collapse navbar-collapse navHeaderCollapse">
-                <ul class="nav navbar-nav navbar-right">
-
-                    <!-- Suggestions -->
-                    <li>
-                        <a href="#suggestions" data-toggle="modal">
-                            SUGGESTIONS
-                        </a>
-                    </li>
-
-                    <!-- About us -->
+                <!-- Buttons beside the title -->
+                <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             ABOUT US  <b class="caret"></b>
@@ -71,17 +62,21 @@
                             </a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#suggestions" data-toggle="modal">
+                            SUGGESTIONS
+                        </a>
+                    </li>
+                </ul>
 
-                    <!-- Register -->
+                <!-- Buttons on the top right --> 
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="register.jsp">
                         JOIN US
                     </a></li>
-
-                    <!-- Sign in -->
                     <li><a href="#signIn" data-toggle="modal">
                         SIGN IN
                     </a></li>
-
                 </ul>
             </div>
 
@@ -197,7 +192,7 @@
                                     placeholder="you_study@dlsu.edi.wow">
                             </div>
                         </div>
-
+                        
                         <!-- Actual suggestion content -->
                         <div class="form-group">
                             <label for="suggestion" class="col-lg-2">
@@ -206,7 +201,8 @@
                             <div class="input-group col-lg-10">
                                 <textarea class="form-control" rows="5"
                                     cols="69" style="resize:none;"
-                                    name="suggestion"></textarea>
+                                    name="suggestion" 
+                                    placeholder="Note: You can use HTML tags!"></textarea>
                             </div>
                         </div>
 
@@ -240,11 +236,8 @@
     <div class="navbar navbar-inverse navbar-static-top">
         <div class="container">
 
-            <!-- Wrap the logo and sub btn in div called navbar-header -->
             <div class="navbar-header">		
-                <!-- Logo -->
                 <a href="index.jsp" class="navbar-brand">CHOWTIME!</a>		
-                <!-- Substitute button for when collapse happens -->
                 <button class="navbar-toggle" data-toggle="collapse" 
                         data-target=".navHeaderCollapse">
                     <span class="icon-bar"></span>
@@ -253,22 +246,12 @@
                 </button>
             </div>
 
-            <!-- What is going to be collapsed in resizing? --> 
             <div class="collapse navbar-collapse navHeaderCollapse">
-                <ul class="nav navbar-nav navbar-right">
-
-                    <!-- Suggestions -->
-                    <li>
-                        <a href="#suggestions" data-toggle="modal">
-                            SUGGESTIONS
-                        </a>
-                    </li>
-
-                    <!-- About us -->
+                <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             ABOUT US  <b class="caret"></b>
-                        </a>						
+                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="https://www.facebook.com/aldsTM">
                                 Alds Hade
@@ -281,8 +264,14 @@
                             </a></li>
                         </ul>
                     </li>
-
-                    <!-- User -->
+                    <li>
+                        <a href="#suggestions" data-toggle="modal">
+                            SUGGESTIONS
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <%=username%>  <b class="caret"></b>
@@ -294,6 +283,7 @@
                         </ul>
                     </li>
                 </ul>
+                        
             </div>
 
         </div>
@@ -308,6 +298,11 @@
 
                     <div class="modal-header">
                         <h2>We appreciate your feedback, <%=username%>.</h2>
+                        <% if (isAdmin.equals("1")) { %>
+                            <a href="suggestions.jsp">
+                                Or perhaps you'd like to see all suggestions so far...
+                            </a>
+                        <% } %>
                     </div>
 
                     <div class="modal-body">
@@ -326,7 +321,8 @@
                             <div class="input-group col-lg-10">
                                 <textarea class="form-control" rows="5"
                                     cols="69" style="resize:none;"
-                                    name="suggestion"></textarea>
+                                    name="suggestion" 
+                                    placeholder="Note: You can use HTML tags!"></textarea>
                             </div>
                         </div>
 

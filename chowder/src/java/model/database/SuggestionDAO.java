@@ -18,13 +18,13 @@ public class SuggestionDAO implements IDBCUD{
         Suggestion suggestion = (Suggestion) object;
         try {
             
-            String query = "INSERT INTO suggestions VALUES(?,?,?,?);";
+            String query = "INSERT INTO suggestions VALUES(?,?,?,?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, suggestion.getSuggestionID());
             preparedStatement.setString(2, suggestion.getUsername());
             preparedStatement.setString(3, suggestion.getEmail());
-            preparedStatement.setString(4, suggestion.getSuggestions());
-
+            preparedStatement.setString(4, suggestion.getSuggestion());
+            preparedStatement.setTimestamp(5, suggestion.getDatetime());
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -44,13 +44,14 @@ public class SuggestionDAO implements IDBCUD{
         Connection connection = DBConnection.getConnection();
         Suggestion suggestion = (Suggestion) object;
         try {
-            String query = "UPDATE suggestions SET suggestionID = ?, username = ?, email = ?, suggestions = ? WHERE suggestionID = ?;";
+            String query = "UPDATE suggestions SET suggestionID = ?, username = ?, email = ?, suggestion = ?, datetime = ? WHERE suggestionID = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, suggestion.getSuggestionID());
             preparedStatement.setString(2, suggestion.getUsername());
             preparedStatement.setString(3, suggestion.getEmail());
-            preparedStatement.setString(4, suggestion.getSuggestions());
-            preparedStatement.setString(5, origKey);
+            preparedStatement.setString(4, suggestion.getSuggestion());
+            preparedStatement.setTimestamp(5, suggestion.getDatetime());
+            preparedStatement.setString(6, origKey);
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -96,8 +97,12 @@ public class SuggestionDAO implements IDBCUD{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Suggestion suggestion = new Suggestion(resultSet.getInt("suggestionID"), resultSet.getString("username"), resultSet.getString("email"), resultSet.getString("suggestions"));
-                
+                Suggestion suggestion = new Suggestion(
+                        resultSet.getInt("suggestionID"), 
+                        resultSet.getString("username"), 
+                        resultSet.getString("email"), 
+                        resultSet.getString("suggestion"),
+                        resultSet.getTimestamp("datetime"));
                 suggestions.add(suggestion);
             }
         } catch (SQLException sqlException) {
@@ -124,7 +129,12 @@ public class SuggestionDAO implements IDBCUD{
             preparedStatement.setString(1, key);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Suggestion suggestion = new Suggestion(resultSet.getInt("suggestionID"), resultSet.getString("username"), resultSet.getString("email"), resultSet.getString("suggestions"));
+                Suggestion suggestion = new Suggestion(
+                        resultSet.getInt("suggestionID"), 
+                        resultSet.getString("username"),
+                        resultSet.getString("email"), 
+                        resultSet.getString("suggestion"),
+                        resultSet.getTimestamp("datetime"));
                 
                 try {
                     if (connection != null) {
@@ -162,8 +172,12 @@ public class SuggestionDAO implements IDBCUD{
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Suggestion suggestion = new Suggestion(resultSet.getInt("suggestionID"), resultSet.getString("username"), resultSet.getString("email"), resultSet.getString("suggestions"));
-                
+                Suggestion suggestion = new Suggestion(
+                        resultSet.getInt("suggestionID"), 
+                        resultSet.getString("username"), 
+                        resultSet.getString("email"), 
+                        resultSet.getString("suggestion"),
+                        resultSet.getTimestamp("datetime"));
                 suggestions.add(suggestion);
             }
         } catch (SQLException sqlException) {

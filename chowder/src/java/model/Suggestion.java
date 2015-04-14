@@ -5,6 +5,9 @@
  */
 package model;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  *
  * @author Bryan
@@ -14,20 +17,23 @@ public class Suggestion {
     private int suggestionID;
     private String username;
     private String email;
-    private String suggestions;
+    private String suggestion;
+    private Timestamp datetime;
     
     public Suggestion(){
         setSuggestionID(0);
         setUsername("");
         setEmail("");
-        setSuggestions("");
+        setSuggestion("");
+        setDatetime(new Timestamp(new Date().getTime()));
     }
     
-    public Suggestion(int suggestionID, String username, String email, String suggestions){
+    public Suggestion(int suggestionID, String username, String email, String suggestion, Timestamp datetime){
         setSuggestionID(suggestionID);
         setUsername(username);
         setEmail(email);
-        setSuggestions(suggestions);
+        setSuggestion(suggestion);
+        setDatetime(datetime);
     }
     
     public void setSuggestionID(int suggestionID){
@@ -42,8 +48,12 @@ public class Suggestion {
         this.email = email;
     }
     
-    public void setSuggestions(String suggestions){
-        this.suggestions = suggestions;
+    public void setSuggestion(String suggestion){
+        this.suggestion = suggestion;
+    }
+    
+    private void setDatetime(Timestamp datetime) {
+        this.datetime = datetime;
     }
     
     public int getSuggestionID(){
@@ -58,8 +68,12 @@ public class Suggestion {
         return email;
     }
     
-    public String getSuggestions(){
-        return suggestions;
+    public String getSuggestion(){
+        return suggestion;
+    }
+
+    public Timestamp getDatetime() {
+        return datetime;
     }
     
 }

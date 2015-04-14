@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.sql.Timestamp;
+import java.util.Date;
 import model.User;
 
 /**
@@ -25,12 +27,14 @@ public class UserDAO implements IDBCUD{
         Connection connection = DBConnection.getConnection();
         User user = (User) object;
         try {
-            String query = "INSERT INTO user VALUES(?,?,?,?);";
+            String query = "INSERT INTO user VALUES(?,?,?,?,?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, user.getUserID());
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setInt(5, user.getIsAdmin());
+            preparedStatement.setTimestamp(6, user.getMemberSince());
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -50,13 +54,15 @@ public class UserDAO implements IDBCUD{
         Connection connection = DBConnection.getConnection();
         User user = (User) object;
         try {
-            String query = "UPDATE user SET userID = ?, username = ?, password = ?, email = ? WHERE userID = ?;";
+            String query = "UPDATE user SET userID = ?, username = ?, email = ?, password = ?, isAdmin = ?, memberSince = ? WHERE userID = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, user.getUserID());
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getPassword());
-            preparedStatement.setString(5, origKey);
+            preparedStatement.setInt(5, user.getIsAdmin());
+            preparedStatement.setTimestamp(6, user.getMemberSince());
+            preparedStatement.setString(7, origKey);
             preparedStatement.execute();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -102,7 +108,12 @@ public class UserDAO implements IDBCUD{
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                User user = new User(resultSet.getInt("userID"), resultSet.getString("username"), resultSet.getString("email"), resultSet.getString("password"));
+                User user = new User(resultSet.getInt("userID"), 
+                        resultSet.getString("username"), 
+                        resultSet.getString("email"), 
+                        resultSet.getString("password"), 
+                        resultSet.getInt("isAdmin"),
+                        resultSet.getTimestamp("memberSince"));
                 String query2 = "SELECT * FROM preferences WHERE user=\"" + resultSet.getString("username") + "\"";
                 PreparedStatement preparedStatement2 = connection.prepareStatement(query2);
                 ResultSet resultSet2 = preparedStatement2.executeQuery();
@@ -135,12 +146,21 @@ public class UserDAO implements IDBCUD{
             preparedStatement.setString(1, key);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                User user = new User(resultSet.getInt("userID"), resultSet.getString("username"),resultSet.getString("email"),resultSet.getString("password"));
-                String query2 = "SELECT * FROM preferences WHERE user=\"" + resultSet.getString("username") + "\"";
-                PreparedStatement preparedStatement2 = connection.prepareStatement(query2);
+                User user = new User(resultSet.getInt("userID"), 
+                        resultSet.getString("username"), 
+                        resultSet.getString("email"), 
+                        resultSet.getString("password"), 
+                        resultSet.getInt("isAdmin"),
+                        resultSet.getTimestamp("memberSince"));
+                String query2 = "SELECT * FROM preferences WHERE user=\"" 
+                        + resultSet.getString("username") + "\"";
+                PreparedStatement preparedStatement2 = 
+                        connection.prepareStatement(query2);
                 ResultSet resultSet2 = preparedStatement2.executeQuery();
                 while(resultSet2.next()){
-                    user.addPreference(resultSet2.getInt("locationID"), resultSet2.getString("name"), resultSet2.getString("address"));
+                    user.addPreference(resultSet2.getInt("locationID"), 
+                            resultSet2.getString("name"), 
+                            resultSet2.getString("address"));
                 }
                 try {
                     if (connection != null) {
@@ -178,12 +198,21 @@ public class UserDAO implements IDBCUD{
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                User user = new User(resultSet.getInt("userID"), resultSet.getString("username"),  resultSet.getString("email"), resultSet.getString("password"));
-                String query2 = "SELECT * FROM preferences WHERE user=\"" + resultSet.getString("username") + "\"";
-                PreparedStatement preparedStatement2 = connection.prepareStatement(query2);
+                User user = new User(resultSet.getInt("userID"), 
+                        resultSet.getString("username"), 
+                        resultSet.getString("email"), 
+                        resultSet.getString("password"), 
+                        resultSet.getInt("isAdmin"),
+                        resultSet.getTimestamp("memberSince"));
+                String query2 = "SELECT * FROM preferences WHERE user=\"" 
+                        + resultSet.getString("username") + "\"";
+                PreparedStatement preparedStatement2 = 
+                        connection.prepareStatement(query2);
                 ResultSet resultSet2 = preparedStatement2.executeQuery();
                 while(resultSet2.next()){
-                    user.addPreference(resultSet2.getInt("locationID"), resultSet2.getString("name"), resultSet2.getString("address"));
+                    user.addPreference(resultSet2.getInt("locationID"), 
+                            resultSet2.getString("name"), 
+                            resultSet2.getString("address"));
                 }
                 users.add(user);
             }
@@ -219,8 +248,13 @@ public class UserDAO implements IDBCUD{
             ResultSet resultSet = preparedStatement.executeQuery();
             
             if(resultSet.next()) {
-	               user = new User(resultSet.getInt("userID"), resultSet.getString("username"), resultSet.getString("email"), resultSet.getString("password"));
-	            }
+                user = new User(resultSet.getInt("userID"), 
+                        resultSet.getString("username"), 
+                        resultSet.getString("email"), 
+                        resultSet.getString("password"),
+                        resultSet.getInt("isAdmin"),
+                        resultSet.getTimestamp("memberSince"));
+            }
             
         } catch(SQLException e){
             e.printStackTrace();
